@@ -24,12 +24,12 @@ app.get('/', (req, res) => {
   res.render('index');
 });
 
-app.get('/charts1', (req, res) => {
-  res.render('charts1');
+app.get('/chart1', (req, res) => {
+  res.render('chart1');
 });
 
-app.get('/charts2', (req, res) => {
-  pool.query('select domain_t, count(domain_t) cnt from chatbot.activity group by domain_t order by domain_t;', (error, result) => {
+app.get('/chart2', (req, res) => {
+  pool.query('select domain_t, count(domain_t) cnt from chatbot.activity group by domain_t order by domain_t;', (error, results) => {
     if (error) {
       if (debug_code == 0) {
         return res.status(400).send('Invalid Credentials...');
@@ -37,11 +37,8 @@ app.get('/charts2', (req, res) => {
         return res.status(400).send('Line: 37\n' + error);
       }
     } else {
-      if (result.rowCount > 0) {
-        const sqlResults = [];
-        sqlResults.push(result.rows);
-        
-        res.render('charts2', {sqlResults: sqlResults});
+      if (results.rowCount > 0) {
+        res.render('chart2', {results: results.rows});
       } else {
         if (debug_code == 0) {
           return res.status(400).send('Invalid Credentials...');
