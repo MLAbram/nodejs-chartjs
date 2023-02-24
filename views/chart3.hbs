@@ -6,18 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/bootstrap-5.0.2.min.css">
     <link rel="stylesheet" href="/style.css">
-    <title>Using Chart.JS in Node.JS</title>
+    <title>Chart #3</title>
 </head>
 <body>
     {{>header}}
-    <div class="container mt-4">
-        <div class="jumbotron">
-            <h1 class="display-8">Available Chart Examples</h1>
-            <p class="lead">
-                <a href="/chart1">Chart #1</a><br>
-                <a href="/chart2">Chart #2</a><br>
-                <a href="/chart3">Chart #3</a><br>
-            </p>
+    <div>
+        <div class="chart-container" style="position: relative; height:40vh; width:40vw">
+            <canvas id="chart3">
+                <p>Your browser not supported...</p>
+            </canvas>
         </div>
     </div>
     {{>footer}}
