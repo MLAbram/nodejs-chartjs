@@ -4,39 +4,44 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/bootstrap-5.0.2.min.css">
-    <link rel="stylesheet" href="/style.css">
+    <link type="text/css" rel="stylesheet" href="/bootstrap-5.0.2.min.css">
+    <link type="text/css" rel="stylesheet" href="/style.css">
     <title>Chart #2</title>
 </head>
 <body>
     {{>header}}
     <div class="container mt-4">
-        <div class="chart-container" style="position: relative; height:40vh; width:40vw">
+        <div class="chart-container" style="position: relative; height:50vh; width:50vw">
             <canvas id="myChart">
                 <p>Your browser not supported...</p>
             </canvas>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-        <script>
-            const results = ["{{this.state_t}}"]; 
-            results.push(results);
-            document.write(results);
-        </script>
         <script>
             const data = {
                 labels: [
-                    'Red',
-                    'Blue',
-                    'Yellow'
+                    {{#each result}}
+                        '{{this.state_t}}',
+                    {{/each}}
                 ],
                 datasets: [{
-                    label: 'My First Dataset',
-                    data: [300, 50, 100],
+                    label: 'Top 10 States',
+                    data: [
+                        {{#each result}}
+                            {{this.cnt}},
+                        {{/each}}
+                    ],
                     backgroundColor: [
-                    'rgb(255, 99, 132)',
-                    'rgb(54, 162, 235)',
-                    'rgb(255, 205, 86)'
+                    '#006ba4',
+                    '#ff800e',
+                    '#ababab',
+                    '#595959',
+                    '#5f9ed1',
+                    '#c85200',
+                    '#898989',
+                    '#a2c8ec',
+                    '#ffbc79',
+                    '#cfcfcf'
                     ],
                     hoverOffset: 4
                 }]
@@ -52,11 +57,6 @@
                 config
             );
         </script>
-    </div>
-    <div>
-        {{#each result}}
-        Results: {{this.state_t}} | {{this.cnt}}<br>
-        {{/each}}
     </div>
     {{>footer}}
     <script src="/bootstrap-5.0.2.min.js"></script>

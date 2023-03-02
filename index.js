@@ -32,7 +32,7 @@ app.get('/chart1', (req, res) => {
 
 // pull data from database and push to handlebars where chart.js script is located
 app.get('/chart2', (req, res) => {
-  pool.query('select state_t, count(*) cnt from demos.contacts group by state_t order by state_t;', (error, result) => {
+  pool.query('select state_t, count(*) cnt from demos.contacts group by state_t order by count(*) desc limit 10;', (error, result) => {
     if (error) {
       if (debug_code == 0) {
         return res.status(400).send('Invalid Credentials...');
