@@ -6,17 +6,86 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/bootstrap-5.0.2.min.css">
     <link rel="stylesheet" href="/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js"></script>
     <title>Chart #3</title>
 </head>
 <body>
     {{>header}}
     <div>
-        <div class="chart-container" style="position: relative; height:40vh; width:40vw">
+        <div class="chart-container" style="position: relative; height:700px;">
             <canvas id="chart3">
                 <p>Your browser not supported...</p>
             </canvas>
+            <script>
+                const data = {
+                    labels: [
+                        {{#each dataMonth}}
+                            '{{dateFormat this 'YYYY-MM'}}',
+                        {{/each}}
+                    ],
+                    datasets: [{
+                        label: '',
+                        data: [
+                            {{#each dataSales}}
+                                {{this}},
+                            {{/each}}
+                        ],
+                        borderColor: [
+                            '#006ba4',
+                            '#ff800e',
+                            '#ababab',
+                            '#595959',
+                        ],
+                        backgroundColor: [
+                            '#006ba4',
+                            '#ff800e',
+                            '#ababab',
+                            '#595959',
+                            {{!-- '#5f9ed1',
+                            '#c85200',
+                            '#898989',
+                            '#a2c8ec',
+                            '#ffbc79',
+                            '#cfcfcf' --}}
+                        ],
+                        hoverOffset: 4,
+                        tension: 0.4
+                    }]
+                };
+                
+                const config = {
+                    type: 'line',
+                    data: data,
+                    options: {
+                        scales: {
+                            x: {
+                                ticks: {
+                                    autoskip: false,
+                                    maxRotation: 45,
+                                    minRotation: 45
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        }
+                    }
+                };
+
+                const chart3 = new Chart(
+                    document.getElementById('chart3'),
+                    config
+                );
+            </script>
         </div>
     </div>
+    {{!-- <div>
+        {{#each result}}
+            {{dateFormat this.month_dt 'YYYY-MM'}}<br>
+        {{/each}}
+    </div> --}}
     {{>footer}}
     <script src="/bootstrap-5.0.2.min.js"></script>
 </body>

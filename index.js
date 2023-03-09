@@ -8,10 +8,12 @@ const HTMLFolder = path.join(__dirname, './html');
 const charts = require('./routes/charts');
 const dashboard = require('./routes/dashboard');
 const Chart = require('chart.js');
+const { handlebars } = require('hbs');
 
 const debug_code = 0;  // 0 = False, 1 = True
 
 hbs.registerPartials(path.join(__dirname, './views'));
+hbs.registerHelper('dateFormat', require('handlebars-dateformat'));
 
 app.set('view engine', 'hbs');
 
@@ -55,38 +57,33 @@ app.get('/chart2', (req, res) => {
 
 // pull data from database, generate chart.js here and push to handlebars to be displayed
 app.get('/chart3', (req, res) => {
-  // setup block
-  // const data = {
-  //   labels: [
-  //     'Red',
-  //     'Blue',
-  //     'Yellow'
-  //   ],
-  //   datasets: [{
-  //     label: 'My First Dataset',
-  //     data: [300, 50, 100],
-  //     backgroundColor: [
-  //       'rgb(255, 99, 132)',
-  //       'rgb(54, 162, 235)',
-  //       'rgb(255, 205, 86)'
-  //     ],
-  //     hoverOffset: 4
-  //   }]
-  // };
-
-  // // config block
-  // const config = {
-  //   type: 'pie',
-  //   data: data,
-  // };
-
-  // // render block
-  // const chart3 = new Chart(
-  //   'chart3',
-  //   config
-  // );
-
-  res.render('chart3');
+  pool.query("select json_build_object('month_dt', json_agg(month_dt), 'location_t', json_agg(location_t), 'sales_n', json_agg(sales_n)) from demos.sales where extract(year from month_dt) = 2000;", (error, result) => {
+    if (error) {
+      if (debug_code == 0) {
+        return res.status(400).send('Invalid Credentials...');
+      } else {
+        return res.status(400).send('Line: 63<br>>' + error);
+      }
+    } else {
+      if (result.rowCount > 0) {
+        var dataMonth = [];
+        var dataLocation = [];
+        var dataSales = [];
+        
+        dataMonth = result.rows[0].json_build_object.month_dt;
+        dataLocation = result.rows[0].json_build_object.location_t;
+        dataSales = result.rows[0].json_build_object.sales_n;
+        
+        res.render('chart3', {dataMonth: dataMonth, dataLocation: dataLocation, dataSales: dataSales});
+      } else {
+        if (debug_code == 0) {
+          return res.status(400).send('Invalid Credentials...');
+        } else {
+          return res.status(400).send('Line: 72<br>' + error);
+        }
+      }
+    }
+  });
 });
 
 app.listen(3000, () => {
