@@ -8,11 +8,12 @@ const HTMLFolder = path.join(__dirname, './html');
 const charts = require('./routes/charts');
 const dashboard = require('./routes/dashboard');
 const Chart = require('chart.js');
-const { handlebars } = require('hbs');
+// const { handlebars } = require('hbs');
 
 const debug_code = 0;  // 0 = False, 1 = True
 
-hbs.registerPartials(path.join(__dirname, './views'));
+// hbs.registerPartials(path.join(__dirname, './views'));
+hbs.registerPartials(__dirname + '/views', function (err) {});
 hbs.registerHelper('dateFormat', require('handlebars-dateformat'));
 
 app.set('view engine', 'hbs');
